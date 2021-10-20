@@ -8,7 +8,6 @@ const UsuarioSchema = mongoose.Schema({
     password : {type : String, required : true},
     rol : {type : String, required: true, maxlength : 50},
     email : {type : String, required: true, maxlength : 50},
-    //foto:{type:String},
 },{
     timestamps : true,
     versionkey : false

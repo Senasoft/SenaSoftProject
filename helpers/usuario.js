@@ -1,6 +1,5 @@
 import Usuario from '../models/usuario.js';
 
-
 // validar si existe usuario con ese nombre
 const existeUsuarioByNombreUsuario = async(nombreUsuario)=>{
     // limpiar variable
@@ -55,7 +54,7 @@ const validarEmaiAgregarUser = async(email)=>{
 
     //No estar vacio
     if(email.length==0){
-        throw new Error("Correo se encuentra vacio vacio");
+        throw new Error("Correo se encuentra vacio");
     }
 
     //Validar longitud del correo
@@ -120,7 +119,6 @@ const validarEmailUsuario = async(email)=>{
         throw new Error("Email vacio")
     }
 }
-
 
 export {
     existeUsuarioByNombreUsuario,

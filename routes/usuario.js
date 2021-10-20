@@ -5,7 +5,6 @@ import usuarioControllers from '../controllers/usuario.js';
 import { validarCampo } from '../middlewares/validarCampos.js';
 import { validarJWR } from '../middlewares/validarJwt.js';
 import { validarRol } from '../middlewares/validarRoles.js';
-import { validarExistenciaArchivo } from '../middlewares/validarArchivo.js';
 import {
     existeUsuarioByNombreUsuario,
     validarPassword,
@@ -60,14 +59,14 @@ router.get('/listarUsuarios',[
     validarJWR,
     validarRol('administrador'),
     validarCampo
-],usuarioControllers.traerListaUsuariosGet)
+],usuarioControllers.traerListaUsuariosGet);
 
 //listar usuarios por fecha de creacion
 router.get('/listarUsuariosFecha',[
     validarJWR,
     validarRol('administrador'),
     validarCampo
-],usuarioControllers.traerUsuariosPorFechaCreacion)
+],usuarioControllers.traerUsuariosPorFechaCreacion);
 
 // activar
 router.put('/activar/:id',[
@@ -81,7 +80,7 @@ router.put('/activar/:id',[
 // desactivar
 router.put('/desactivar/:id',[
     validarJWR,
-    validarRol(),
+    validarRol('administrador'),
     check('id','ID no valido').isMongoId(),
     check('id').custom(existeUsuarioById),
     validarCampo
@@ -90,7 +89,7 @@ router.put('/desactivar/:id',[
 // actualizar nombre
 router.put('/actualizarNombre/:id',[
     validarJWR,
-    validarRol(),
+    validarRol('administrador'),
     check('id','ID no valido').isMongoId(),
     check('id').custom(existeUsuarioById),
 
@@ -100,73 +99,14 @@ router.put('/actualizarNombre/:id',[
     validarCampo
 ],usuarioControllers.actualizarNomreUsuarioPut);
 
-// actualizar password
-router.put('/actualizarPassword/:id',[
-    validarJWR,
-    validarRol(),
-    check('id','ID no valido').isMongoId(),
-    check('id').custom(existeUsuarioById),
-
-    check('password','Contraseña de usuario obligatorio').not().isEmpty(),
-    check('password').custom(validarPassword),
-    
-    validarCampo
-],usuarioControllers.actualizarPasswordPut);
-
-// actualiar rol
-router.put('/actualizarRol/:id',[
-    validarJWR,
-    validarRol(),
-    check('id','ID no valido').isMongoId(),
-    check('id').custom(existeUsuarioById),
-
-    check('rol','Rol de usuario obligatorio').not().isEmpty(),
-    check('rol').custom(validarRolUsuario),
-    
-    validarCampo
-],usuarioControllers.actualizarRolPut);
-
-// actualizar email
-// actualiar rol
-router.put('/actualizarEmail/:id',[
-    validarJWR,
-    validarRol(),
-    check('id','ID no valido').isMongoId(),
-    check('id').custom(existeUsuarioById),
-
-    check('email','Email de usuario obligatorio').not().isEmpty(),
-    check('email').custom(validarEmailUsuario),
-    
-    validarCampo
-],usuarioControllers.actualizarEmailPut);
-
 // eliminar
 router.delete('/eliminarUsuario/:id',[
     validarJWR,
-    validarRol(),
+    validarRol('administrador'),
     check('id','ID no valido').isMongoId(),
     check('id').custom(existeUsuarioById),
     validarCampo
 ],usuarioControllers.eliminarUsuarioDelte);
-
-// cargar foto a cloudinary
-router.post('/uploadFoto/:id',[
-    validarJWR,
-    validarRol(),
-    check('id','ID no valido').isMongoId(),
-    check('id').custom(existeUsuarioById),
-
-    validarExistenciaArchivo,
-    validarCampo
-],usuarioControllers.cargarImagenUnicaUsuarioPost);
-
-//traer la foto de cloudinary
-router.get('/fotoUsuario/:id',[
-    validarJWR,
-    check('id','ID no valido').isMongoId(),
-    check('id').custom(existeUsuarioById),
-    validarCampo
-],usuarioControllers.traerImagenUnicaUsuario);
 
 //exportar la instancia cuando sea requerida o invocada
 export default router
