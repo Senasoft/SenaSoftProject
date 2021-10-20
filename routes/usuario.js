@@ -24,7 +24,7 @@ router.post('/agregar',[
     check('nombreUsuario','Nombre de usuario obligatorio').not().isEmpty(),
     check('password','constraseña de usuario obligatoria').not().isEmpty(),
     check('rol','Rol de usuario obligatorio').not().isEmpty(),
-
+    check('email', 'Email del usuario es obligatorio').not().isEmpty(),
     check('nombreUsuario').custom(existeUsuarioByNombreUsuario),
     check('password').custom(validarPassword),
     check('rol').custom(validarRolUsuario),
@@ -55,9 +55,9 @@ router.get('/usuarioById/:id',[
 
 // listar los usuarios de la bd
 router.get('/listarUsuarios',[
-    validarJWR,
-    validarRol(),
-    validarCampo
+    //validarJWR,
+    //validarRol(),
+    //validarCampo
 ],usuarioControllers.traerListaUsuariosGet)
 
 //listar usuarios por fecha de creacion

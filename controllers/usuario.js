@@ -6,7 +6,6 @@ import bcryptjs from 'bcryptjs';
 import cloudinary from 'cloudinary';
 cloudinary.config(process.env.CLOUDINARY_URL);
 
-import {validarEmaiAgregarUser} from '../helpers/usuario.js';
 import { generarJWT } from "../middlewares/validarJwt.js";
 import { validarTipoFoto } from "../middlewares/validarArchivo.js"
 
@@ -19,30 +18,20 @@ const usuarioControllers = {
     guardarUsuarioPost : async (req,res)=>{
 
         // capturar variables
-        const {nombreUsuario, password, rol, ...resto} = req.body;
+        const {nombreUsuario, password, rol, email, ...resto} = req.body;
         console.log(req.body);
         // limpiar variables
         const nameUser = nombreUsuario.toString().toLowerCase().trim();
         const permisos = rol.toString().toLowerCase().trim();
         const pass = password.toString().trim()
-
-        // propiedades no obligatorias
-        var addressEmail = '';
-
-        // validar email
-        if(resto.email != undefined){
-            let ricibirEmail = resto.email;
-            addressEmail = ricibirEmail.toString().trim();
-            let validar = await validarEmaiAgregarUser(addressEmail);
-            if(validar != true){ return res.status(400).json({msg : `${validar}`})}
-        }
+        const correo = email.toString().toLowerCase().trim();
 
         // crear objeto usuario
         const usuario = Usuario({
             nombreUsuario : nameUser,
             password : pass,
             rol : permisos,
-            email : addressEmail
+            email : correo
         });
 
         // numero de capaz para encriptar las password
@@ -59,7 +48,7 @@ const usuarioControllers = {
 
     // iniciar sesion
     iniciarSesionUsuarioPost : async(req, res)=>{
-        // capturar varialbes
+        // capturar variables
         const {nombreUsuario, password} = req.body;
 
         //limpiar variables
@@ -126,11 +115,10 @@ const usuarioControllers = {
             return res.status(400).json({msg:"Fecha inicial o final no estan en la peticion"})
         }
 
-        //vaidar fecha
+        //validar fecha
         if(!new Date(fechaInicial) == false || !new Date(fechaFinal) == false){
             return res.status(400).json({msg:"Fecha inicial y/o final invalidas"})
         }
-        
 
         //funcion para agregar un dia a la fecha final
         let addDays = function(str,days){
@@ -138,8 +126,6 @@ const usuarioControllers = {
             myDate.setDate(myDate.getDate()+parseInt(days));
             return myDate
         }
-
-        
 
         //obtener la fecha final  + 1 dia
         let FechaFinalModi = addDays( new Date(fechaFinal),1);
@@ -161,7 +147,7 @@ const usuarioControllers = {
 
     },
 
-    //activar usaurio
+    //activar usuario
     activarUsuarioPut : async(req, res)=>{
         // capturar variable
         const {id} = req.params;
@@ -173,7 +159,7 @@ const usuarioControllers = {
         res.json({msg:"Usuario activado"})
     },
     
-    //desactivar usaurio
+    //desactivar usuario
     desactivarUsuarioPut : async(req, res)=>{
         // capturar variable
         const {id} = req.params;

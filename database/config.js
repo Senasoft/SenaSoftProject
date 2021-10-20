@@ -6,7 +6,7 @@ const dbConnection = async () =>{
     
     //si se establece la conexion con la base de datos
     try {
-        await mongoose.connect(process.env.MONGO_LOCAL, {
+        await mongoose.connect(process.env.MONGODB_CNX, {
             useNewUrlParser: true,
             useUnifiedTopology:true,
             useCreateIndex : true,

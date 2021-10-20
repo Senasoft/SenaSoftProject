@@ -1,7 +1,7 @@
 import Usuario from '../models/usuario.js';
 
 
-// validar si existe usuari con ese nombre
+// validar si existe usuario con ese nombre
 const existeUsuarioByNombreUsuario = async(nombreUsuario)=>{
     // limpir variable
     nombreUsuario = nombreUsuario.toString().toLowerCase().trim();
