@@ -50,8 +50,5 @@ router.put('/desactivar/:id',[
   validarCampo
 ],pacienteControllers.desactivarPacientePut);
 
-//Falta el delete
-// Me da error :c
-
 //exportar la instancia cuando sea requerida o invocada
 export default router
