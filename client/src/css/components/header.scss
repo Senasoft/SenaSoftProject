@@ -1,0 +1,60 @@
+@import '../vars/colors.vars.scss';
+@import '../vars/fonts.vars.scss';
+
+.header {
+  background-color: $color--primary;
+  color: $color--secondary;
+  padding: .5rem 1rem;
+  display: flex;
+  width: 100%;
+  justify-content: space-between;
+  align-items: center;
+  position: fixed;
+  z-index: 1;
+}
+
+.burger {
+  &__switch {
+    background-color: transparent;
+    border: 0;
+    cursor: pointer;
+  }
+  &__background {
+    background-color: rgba($color: #000000, $alpha: 0);
+    transition-duration: 300ms;
+    transition-property: background-color;
+    position: absolute;
+    left: 0;
+    top: 100%;
+    width: 100%;
+    height: 100vh;
+    z-index: -1;
+    &--active {
+      background-color: rgba($color: #000000, $alpha: .5);
+      transition-duration: 300ms;
+      transition-property: background-color;
+    }
+  }
+  &__menu {
+    background-color: $color--secondary;
+    position: absolute;
+    right: 0;
+    top: 100%;
+    max-width: 350px;
+    width: 100%;
+    height: 100vh;
+    transform: translateX(100%);
+    transition-duration: 300ms;
+    transition-property: transform;
+    &--active {
+      transform: translateX(0);
+      transition-duration: 300ms;
+      transition-property: transform;
+    }
+    .btn--menu {
+      border-radius: 0;
+      margin: .5rem 0;
+    }
+  }
+}
+
