@@ -131,10 +131,13 @@ const llenarSelectConDispositivosDisponibles = () => {
                     $canvas.height = $video.videoHeight;
                     contexto.drawImage($video, 0, 0, $canvas.width, $canvas.height);
 
-                    let foto = $canvas.toDataURL().document.getElementById("im1"); //Esta es la foto, en base 64
+                    let foto = $canvas.toDataURL() //Esta es la foto, en base 64
 
                     // Mandar foto al backend
-
+                    fetch("/api/usuario/listarUsuarios")
+                    .then(data => {
+                        console.log(data)
+                    })
                     
 //                    let enlace = document.createElement('a'); // Crear un <a>
 //                    enlace.download = "imagen.jpg";
