@@ -1,0 +1,41 @@
+@import 'vars/colors.vars.scss';
+@import 'vars/fonts.vars.scss';
+
+* {
+    font-family: 'font-primary';
+    margin: 0;
+    box-sizing: border-box;
+}
+
+a {
+    text-decoration: none;
+    color: inherit;
+}
+
+.app {
+    min-height: 100vh;
+    position: relative;
+}
+
+button:focus {
+    outline: 0;
+}
+
+.btn {
+    background-color: $color--primary;
+    width: 100%;
+    padding: .5rem;
+    display: block;
+    border-radius: 300px;
+    text-align: center;
+    font-weight: bold;
+}
+
+.main {
+    position: relative;
+    z-index: 1;
+    padding-top: 64px;
+    padding-bottom: 66px;
+    width: 100%;
+    min-height: 100vh;
+}
