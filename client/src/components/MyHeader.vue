@@ -1,11 +1,11 @@
 <template>
   <header class="header">
     <h1>Health Reader</h1>
-    <div class="burger" v-if="burgerSwitch">
+    <div class="burger" v-if="burgerShow">
       <button @click="()=> burgerSwitch= !burgerSwitch" class="burger__switch">
         <img :src="require('@/assets/icons/burgerIcon.svg')" alt="">
       </button>
-      <div :class="burgerSwitch && 'burger__background--active'" class="burger__background"/>
+      <div @click="()=> burgerSwitch=false" :class="burgerSwitch && 'burger__background--active'" class="burger__background"/>
       <nav class="burger__menu" :class="burgerSwitch && 'burger__menu--active'">
         <router-link to="" class="btn btn--menu">
           Escanear
@@ -34,9 +34,9 @@ export default {
     const Route = useRoute()
     watch(Route, ()=> {
       if(!Route.meta.requireAuth) {
-        burgerSwitch.value = false
+        burgerShow.value = false
       } else {
-        burgerSwitch.value = true
+        burgerShow.value = true
       }
     })
     return {

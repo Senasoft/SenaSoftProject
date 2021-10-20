@@ -30,3 +30,12 @@ button:focus {
     text-align: center;
     font-weight: bold;
 }
+
+.main {
+    position: relative;
+    z-index: 1;
+    padding-top: 64px;
+    padding-bottom: 66px;
+    width: 100%;
+    min-height: 100vh;
+}

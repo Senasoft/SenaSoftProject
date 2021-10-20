@@ -1,0 +1,13 @@
+@import '../vars/colors.vars.scss';
+@import '../vars/fonts.vars.scss';
+
+.footer {
+  background-color: $color--primary;
+  width: 100%;
+  padding: .5rem;
+  display: flex;
+  justify-content: center;
+  position: absolute;
+  bottom: 0;
+
+}

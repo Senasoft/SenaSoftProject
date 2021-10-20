@@ -10,7 +10,7 @@
   justify-content: space-between;
   align-items: center;
   position: fixed;
-  z-index: 1;
+  z-index: 2;
 }
 
 .burger {
@@ -20,19 +20,17 @@
     cursor: pointer;
   }
   &__background {
-    background-color: rgba($color: #000000, $alpha: 0);
-    transition-duration: 300ms;
-    transition-property: background-color;
+    background-color: rgba($color: #000000, $alpha: .5);
     position: absolute;
     left: 0;
     top: 100%;
     width: 100%;
-    height: 100vh;
-    z-index: -1;
+    height: calc(100vh - 131px);
+    animation-name: opacity-out;
+    animation-duration: 300ms;
+    animation-fill-mode: forwards;
     &--active {
-      background-color: rgba($color: #000000, $alpha: .5);
-      transition-duration: 300ms;
-      transition-property: background-color;
+      animation-name: opacity-in;
     }
   }
   &__menu {
@@ -42,7 +40,7 @@
     top: 100%;
     max-width: 350px;
     width: 100%;
-    height: 100vh;
+    height: calc(100vh - 131px);;
     transform: translateX(100%);
     transition-duration: 300ms;
     transition-property: transform;
@@ -58,3 +56,26 @@
   }
 }
 
+
+@keyframes opacity-out {
+  0% {
+    opacity: 1;
+  }
+  99% {
+    opacity: 0;
+    transform: translateX(0);
+  }
+  100% {
+    opacity: 0;
+    transform: translateX(100%);
+  }
+}
+
+@keyframes opacity-in {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
