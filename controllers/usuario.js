@@ -49,27 +49,31 @@ const usuarioControllers = {
     // iniciar sesion
     iniciarSesionUsuarioPost : async(req, res)=>{
         // capturar variables
-        const {nombreUsuario, password} = req.body;
+        const {email, password} = req.body;
 
         //limpiar variables
-        const nameUser = nombreUsuario.toString().toLowerCase().trim();
+        const correo = email.toString().toLowerCase().trim();
         const pass = password.toString().trim();
 
-        //buscar usuario
-        const usuario = await Usuario.findOne({nombreUsuario:nameUser});
+        //buscar correo
+        const usuario = await Usuario.findOne({email:correo});
+
+        //validar correo
+        const Email = await Usuario.findOne({email});
+        if (!Email) {
+            return res.status(404).json({msg:"Correo y/o contraseña invalidos"})
+        }
 
         //validar contraseña
         const validarPasswordLogin = bcryptjs.compareSync(pass, usuario.password);
         if(!validarPasswordLogin){
-            return res.status(400).json({msg:"Usuairo y/o contraseña invalidos"})
+            return res.status(400).json({msg:"Correo y/o contraseña invalidos"})
         }
 
         const token = await generarJWT(usuario._id);
         
         res.json({
-            nombreUsuario : usuario.nombreUsuario,
-            rol : usuario.rol,
-            _id : usuario._id,
+            usuario,
             token
         })
     },

@@ -12,7 +12,8 @@ import {
     validarRolUsuario,
     validarExisteNombreUsuario,
     existeUsuarioById,
-    validarEmailUsuario
+    validarEmailUsuario,
+    validarEmaiAgregarUser
 } from '../helpers/usuario.js'
 
 
@@ -21,23 +22,24 @@ const router = Router();
 
 // agregar usuario
 router.post('/agregar',[
-    check('nombreUsuario','Nombre de usuario obligatorio').not().isEmpty(),
+    check('nombreUsuario','Nombre de usuario obligatorio').not().isEmpty().custom(validarExisteNombreUsuario),
     check('password','constraseña de usuario obligatoria').not().isEmpty(),
     check('rol','Rol de usuario obligatorio').not().isEmpty(),
-    check('email', 'Email del usuario es obligatorio').not().isEmpty(),
+    check('email', 'Email del usuario es obligatorio').not().isEmpty().custom(validarEmaiAgregarUser),
     check('nombreUsuario').custom(existeUsuarioByNombreUsuario),
     check('password').custom(validarPassword),
     check('rol').custom(validarRolUsuario),
+
+    validarJWR,
+    validarRol('administrador'),
 
     validarCampo
 ],usuarioControllers.guardarUsuarioPost);
 
 // iniciar sesion
 router.post('/iniciarSesion',[
-    check('nombreUsuario','Nombre de usuario obligatorio').not().isEmpty(),
+    check('email', 'El correo no puede estar vacio').not().isEmpty(),
     check('password','constraseña de usuario obligatoria').not().isEmpty(),
-
-    check('nombreUsuario').custom(validarExisteNombreUsuario),
     check('password').custom(validarPassword),
 
     validarCampo
@@ -46,7 +48,7 @@ router.post('/iniciarSesion',[
 // traer usuario por id
 router.get('/usuarioById/:id',[
     validarJWR,
-    validarRol(),
+    validarRol('administrador'),
     check('id','ID no valido').isMongoId(),
     check('id').custom(existeUsuarioById),
 
@@ -55,15 +57,15 @@ router.get('/usuarioById/:id',[
 
 // listar los usuarios de la bd
 router.get('/listarUsuarios',[
-    //validarJWR,
-    //validarRol(),
-    //validarCampo
+    validarJWR,
+    validarRol('administrador'),
+    validarCampo
 ],usuarioControllers.traerListaUsuariosGet)
 
 //listar usuarios por fecha de creacion
 router.get('/listarUsuariosFecha',[
     validarJWR,
-    validarRol(),
+    validarRol('administrador'),
     validarCampo
 ],usuarioControllers.traerUsuariosPorFechaCreacion)
 
