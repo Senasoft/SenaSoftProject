@@ -90,7 +90,6 @@ const pacienteControllers = {
     const paciente = await Paciente.findByIdAndDelete(id);
     res.json({msg:'Paciente eliminado'});
   }
-
 }
 
 //exportar cuando este arcivo js sea invocado o requerido

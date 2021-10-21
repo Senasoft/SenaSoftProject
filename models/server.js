@@ -9,6 +9,7 @@ import dbConnection from '../database/config.js';
 //// solicitar rutas
 import usuario from '../routes/usuario.js';
 import paciente from '../routes/paciente.js';
+import camara from '../routes/camara.js';
 
 //// crear la clase de servidor
 class Server{
@@ -34,6 +35,7 @@ class Server{
     routes(){
         this.app.use('/api/usuario', usuario);
         this.app.use('/api/paciente', paciente);
+        this.app.use('/api/foto', camara);
     }
 
     // metodos para llamar los middlewares
