@@ -1,7 +1,15 @@
 <template>
 <div class="scanner">
   <video ref="Video" id="video" autoplay class="scanner__video"></video>
-  <canvas ref="Canvas" width="100%" height="100%" id="canvas"></canvas>
+  <div v-show="photoModal" class="scanner-modal">
+    <canvas class="scanner-modal__canvas" ref="Canvas" id="canvas"></canvas>
+    <div class="scanner-modal__buttons">
+      <button class="btn btn--scanner-modal" @click="discardImage">Descartar</button>
+      <button class="btn btn--scanner-modal" @click="addImage">Tomar otra foto</button>
+      <button class="btn btn--scanner-modal" @click="uploadImage">Subir Historia</button>
+
+    </div>
+  </div>
   <div class="scanner__options">
     <button @click="pickPhoto" class="btn btn--scanner">Scanear</button>
     <button @click="changeCamera" v-if="dispositives.length > 1" class="scanner__change">
@@ -23,6 +31,9 @@ export default {
     const Video = ref(null)
     const Canvas = ref(null)
     const stream = ref(null)
+    const pothos = ref([])
+    const actualPotho = ref(null)
+    const photoModal = ref(false)
     const ctx = computed(()=>Canvas.value.getContext('2d'))
       const haveSupport = () => {
         return !!(navigator.getUserMedia || (navigator.mozGetUserMedia || navigator.mediaDevices.getUserMedia) || navigator.webkitGetUserMedia || navigator.msGetUserMedia)
@@ -107,9 +118,26 @@ export default {
       Canvas.value.height = Video.value.videoHeight;
       ctx.value.drawImage(Video.value, 0, 0, Canvas.value.width, Canvas.value.height);
 
-      let foto = Canvas.value.toDataURL(); //Esta es la foto, en base 64
-      console.log(foto)
+      actualPotho.value =  Canvas.value.toDataURL();//Esta es la foto, en base 64
+      photoModal.value = true
+    }
 
+    const addImage = () => {
+      pothos.value.push(actualPotho.value)
+      actualPotho.value = null
+      photoModal.value = false
+      //Reanudar reproducción
+      Video.value.play();
+    }
+    const discardImage = () => {
+      actualPotho.value = null
+      photoModal.value = false
+      //Reanudar reproducción
+      Video.value.play();
+    }
+    const uploadImage = () => {
+      actualPotho.value = null
+      photoModal.value = false
       //Reanudar reproducción
       Video.value.play();
     }
@@ -121,7 +149,11 @@ export default {
       pickPhoto,
       changeCamera,
       dispositiveSelect,
-      dispositives
+      dispositives,
+      photoModal,
+      addImage,
+      discardImage,
+      uploadImage
     }
   },
 }
@@ -129,4 +161,5 @@ export default {
 
 <style lang="scss">
 @import '@/css/views/ScanHistory.scss';
+
 </style>

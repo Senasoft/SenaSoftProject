@@ -7,6 +7,12 @@
     <router-link to="" class="btn">
       ver Historias
     </router-link>
+    <router-link to="" class="btn">
+      Registrar paciente
+    </router-link>
+    <router-link to="" class="btn">
+      Ver Pacientes Registrados
+    </router-link>
     <button @click="logout" class="btn">
       Salir
     </button>

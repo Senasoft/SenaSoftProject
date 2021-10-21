@@ -15,6 +15,12 @@
         <router-link to="/scan" class="btn btn--menu">
           Escanear
         </router-link>
+        <router-link to="" class="btn btn--menu">
+          Registrar Paciente
+        </router-link>
+        <router-link to="" class="btn btn--menu">
+          Ver Pacientes Registrados
+        </router-link>
         <router-link v-if="userLogin && userLogin.rol === 'administrador'" to="" class="btn btn--menu">
           Ver Historias
         </router-link>
