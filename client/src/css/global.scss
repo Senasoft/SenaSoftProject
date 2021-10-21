@@ -29,13 +29,34 @@ button:focus {
     border-radius: 300px;
     text-align: center;
     font-weight: bold;
+    border: 0;
+    color: white;
+    margin-top: 1.5rem;
+    cursor: pointer;
+}
+
+.form-input {
+    border: 2px solid $color--primary;
+    width: 100%;
+    padding: .5rem 1rem;
+    margin-top: 1.5rem;
+    border-radius: 2rem;
+    &:focus-visible {
+        outline: none;
+    }
+}
+
+.text--error {
+    color: red;
+    font-size: .8rem;
+    margin: .5rem;
 }
 
 .main {
     position: relative;
-    z-index: 1;
     padding-top: 64px;
     padding-bottom: 66px;
     width: 100%;
-    min-height: 100vh;
+    height: 100vh;
 }
+
