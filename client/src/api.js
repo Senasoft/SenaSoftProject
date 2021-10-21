@@ -13,6 +13,16 @@ export const Login = async (user) => {
   }
 }
 
-export const UploadPhoto = async () => {
-
+export const UploadPhoto = async (photos) => {
+  const formData = new FormData()
+  formData.append('archivos', photos)
+  const response = await fetch("api/usuario/historiaPaciente", {
+    method: "POST",
+    body: formData
+  })
+  if(response.ok) {
+    return response.json()
+  } else {
+    throw await response.json()
+  }
 }
