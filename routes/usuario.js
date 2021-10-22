@@ -3,7 +3,7 @@ import {Router} from 'express';
 import {check} from 'express-validator';
 import usuarioControllers from '../controllers/usuario.js';
 import { validarCampo } from '../middlewares/validarCampos.js';
-import { validarJWR } from '../middlewares/validarJwt.js';
+//import { validarJWR } from '../middlewares/validarJwt.js';
 import { validarRol } from '../middlewares/validarRoles.js';
 import {
     existeUsuarioByNombreUsuario,
@@ -29,7 +29,7 @@ router.post('/agregar',[
     check('password').custom(validarPassword),
     check('rol').custom(validarRolUsuario),
 
-    validarJWR,
+//    validarJWR,
     validarRol('administrador'),
 
     validarCampo
@@ -46,7 +46,7 @@ router.post('/iniciarSesion',[
 
 // traer usuario por id
 router.get('/usuarioById/:id',[
-    validarJWR,
+//    validarJWR,
     validarRol('administrador'),
     check('id','ID no valido').isMongoId(),
     check('id').custom(existeUsuarioById),
@@ -56,21 +56,21 @@ router.get('/usuarioById/:id',[
 
 // listar los usuarios de la bd
 router.get('/listarUsuarios',[
-    validarJWR,
+//    validarJWR,
     validarRol('administrador'),
     validarCampo
 ],usuarioControllers.traerListaUsuariosGet);
 
 //listar usuarios por fecha de creacion
 router.get('/listarUsuariosFecha',[
-    validarJWR,
+//    validarJWR,
     validarRol('administrador'),
     validarCampo
 ],usuarioControllers.traerUsuariosPorFechaCreacion);
 
 // activar
 router.put('/activar/:id',[
-    validarJWR,
+//    validarJWR,
     validarRol(),
     check('id','ID no valido').isMongoId(),
     check('id').custom(existeUsuarioById),
@@ -79,7 +79,7 @@ router.put('/activar/:id',[
 
 // desactivar
 router.put('/desactivar/:id',[
-    validarJWR,
+//    validarJWR,
     validarRol('administrador'),
     check('id','ID no valido').isMongoId(),
     check('id').custom(existeUsuarioById),
@@ -88,7 +88,7 @@ router.put('/desactivar/:id',[
 
 // actualizar nombre
 router.put('/actualizarNombre/:id',[
-    validarJWR,
+//    validarJWR,
     validarRol('administrador'),
     check('id','ID no valido').isMongoId(),
     check('id').custom(existeUsuarioById),
@@ -101,7 +101,7 @@ router.put('/actualizarNombre/:id',[
 
 // eliminar
 router.delete('/eliminarUsuario/:id',[
-    validarJWR,
+//    validarJWR,
     validarRol('administrador'),
     check('id','ID no valido').isMongoId(),
     check('id').custom(existeUsuarioById),
