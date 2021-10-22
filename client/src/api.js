@@ -20,7 +20,6 @@ export const UploadPhoto = async (photos) => {
     counter++
     formData.append('archivo', photo, `historia${counter}.jpeg`)
   });
-  console.log(formData)
   const response = await fetch("api/usuario/historiaPaciente", {
     method: "POST",
     body: formData,

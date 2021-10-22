@@ -10,7 +10,8 @@ export default createStore({
     users: [],
     userLogin: null,
     loading: false,
-    histories: []
+    histories: [],
+    checkout: null
   },
   mutations,
   actions,
