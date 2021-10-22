@@ -77,16 +77,16 @@ export default {
       allowDispositives();
     })
     watch(dispositives, ()=> {
-      if (dispositives.value.length > 0) {
+      if (dispositives.value.length > 0 && !stream.value) {
         dispositiveSelect.value = 0
         // Mostrar stream con el ID del primer dispositivo, luego el usuario puede cambiar
-        mostrarStream(dispositives.value[dispositiveSelect.value].deviceId);
+        showStream(dispositives.value[dispositiveSelect.value].deviceId);
       }
     })
 
 
 
-    const mostrarStream = idDeDispositivo => {
+    const showStream = idDeDispositivo => {
       navigator.mediaDevices.getUserMedia({
         video: {
           // Justo aquí indicamos cuál dispositivo usar
@@ -113,13 +113,13 @@ export default {
     const changeCamera = () => {
       // Detener el stream
       if (stream.value) {
-        stream.value.getTracks().forEach(function (track) {
+        stream.value.getTracks().forEach( track => {
           track.stop();
         });
       }
       dispositiveSelect.value = dispositiveSelect.value === 0 ? 1 : 0 
       // Mostrar el nuevo stream con el dispositivo seleccionado
-      mostrarStream(dispositives.value[dispositiveSelect].deviceId);
+      showStream(dispositives.value[dispositiveSelect.value].deviceId);
     }
     const pickPhoto = () => {
     
