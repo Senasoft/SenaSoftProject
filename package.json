@@ -1,5 +1,5 @@
 {
-  "name": "base",
+  "name": "Health Reader",
   "version": "1.0.0",
   "description": "proyecto base para mongo express node",
   "main": "app.js",
