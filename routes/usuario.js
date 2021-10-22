@@ -3,7 +3,7 @@ import {Router} from 'express';
 import {check} from 'express-validator';
 import usuarioControllers from '../controllers/usuario.js';
 import { validarCampo } from '../middlewares/validarCampos.js';
-import { validarJWR } from '../middlewares/validarJwt.js';
+import { validarJWR } from '../middlewares/validarJWT.js';
 import { validarRol } from '../middlewares/validarRoles.js';
 import { validarExistenciaArchivo } from '../middlewares/validarArchivo.js';
 
