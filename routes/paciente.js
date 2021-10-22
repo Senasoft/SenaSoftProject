@@ -3,7 +3,7 @@ import {Router} from 'express';
 import {check} from 'express-validator';
 import pacienteControllers from '../controllers/paciente.js';
 import { validarCampo } from '../middlewares/validarCampos.js';
-import { validarJWR } from '../middlewares/validarJWT.js';
+import { validarJWR } from '../middlewares/validarjtw.js';
 import { validarRol } from '../middlewares/validarRoles.js';
 import { 
   existePacienteById,
