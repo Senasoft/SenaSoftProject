@@ -5,7 +5,7 @@
     <canvas class="scanner-modal__canvas" ref="Canvas" id="canvas"></canvas>
     <div class="scanner-modal__buttons">
       <button class="btn btn--scanner-modal" @click="discardImage">Descartar</button>
-      <button class="btn btn--scanner-modal" @click="addImage">Tomar otra foto</button>
+      <button class="btn btn--scanner-modal" @click="addImage">añadir otra foto</button>
       <button class="btn btn--scanner-modal" @click="uploadImages">Subir Historia</button>
 
     </div>
@@ -105,7 +105,7 @@ export default {
         //Escuchar el click del botón para tomar la foto
       })
       .catch(error => {
-        console.log("Permiso denegado o error: ", error);
+        console.error("Permiso denegado o error: ", error);
         router.push('/')
       })
     }
