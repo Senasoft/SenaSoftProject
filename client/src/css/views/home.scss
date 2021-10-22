@@ -1,0 +1,9 @@
+@import '../vars/colors.vars.scss';
+@import '../vars/fonts.vars.scss';
+
+.home {
+  color: $color--primary;
+  margin: 10rem auto;
+  max-width: 15rem;
+  text-align: center;
+}

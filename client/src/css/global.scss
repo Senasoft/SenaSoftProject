@@ -1,0 +1,62 @@
+@import 'vars/colors.vars.scss';
+@import 'vars/fonts.vars.scss';
+
+* {
+    font-family: 'font-primary';
+    margin: 0;
+    box-sizing: border-box;
+}
+
+a {
+    text-decoration: none;
+    color: inherit;
+}
+
+.app {
+    min-height: 100vh;
+    position: relative;
+}
+
+button:focus {
+    outline: 0;
+}
+
+.btn {
+    background-color: $color--primary;
+    width: 100%;
+    padding: .5rem;
+    display: block;
+    border-radius: 300px;
+    text-align: center;
+    font-weight: bold;
+    border: 0;
+    color: white;
+    margin-top: 1.5rem;
+    cursor: pointer;
+}
+
+.form-input {
+    border: 2px solid $color--primary;
+    width: 100%;
+    padding: .5rem 1rem;
+    margin-top: 1.5rem;
+    border-radius: 2rem;
+    &:focus-visible {
+        outline: none;
+    }
+}
+
+.text--error {
+    color: red;
+    font-size: .8rem;
+    margin: .5rem;
+}
+
+.main {
+    position: relative;
+    padding-top: 64px;
+    padding-bottom: 66px;
+    width: 100%;
+    height: 100vh;
+}
+

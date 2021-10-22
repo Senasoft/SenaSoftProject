@@ -2,7 +2,6 @@ node_modules/
 
 .env
 public/
-
 client/.DS_Store
 client/node_modules
 
