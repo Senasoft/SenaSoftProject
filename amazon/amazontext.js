@@ -11,9 +11,6 @@ const validarFormulario = async(direccionesLocales)=>{
     var infoFotos = [];
 
     return new Promise(async(resolve,reject)=>{
-        console.log("------------- direcciones locales--------------");
-        console.log(direccionesLocales);
-        console.log("------------- direcciones locales--------------");
 
 
         for(var direccion of direccionesLocales){ 

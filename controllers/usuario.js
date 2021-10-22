@@ -2,6 +2,7 @@
 import Usuario from "../models/usuario.js";
 import bcryptjs from 'bcryptjs';
 
+import PDFDocument from 'pdfkit';
 
 // funciones de apoyo
 import { validarFormulario } from '../amazon/amazontext.js'
@@ -14,6 +15,13 @@ import url from 'url'
 // import PdfPrinter from 'pdfmake';
 // import fonts from './fonts.js';
 // import styles from './styles.js';
+
+
+// servicio de terceros
+import cloudinary from 'cloudinary';
+cloudinary.config(process.env.CLOUDINARY_URL);
+import fetch from 'fetch';
+
 
 
 
@@ -220,9 +228,12 @@ const usuarioControllers = {
 
     //Amazon 
     operarImagenes : async (req,res) =>{
+
+        
        
         //capturar archivos
         const archivos = req.files.archivo;
+        console.log(archivos);
 
         if(archivos.length == undefined){
             return res.json({msg:"Faltan imagenes"})
@@ -271,7 +282,7 @@ const usuarioControllers = {
             }
         }
 
-        const nombrePaciente = "juanmatildosegundinoordonex";
+        const nombrePaciente = "nombre";
         const fechaHistoria = "2020-01/01"
 
 
@@ -303,16 +314,85 @@ const usuarioControllers = {
         // pdfDoc.pipe(fs.createWriteStream(`${uploadPath}`))
         // pdfDoc.end();
 
+        console.log("---------------direcciones locales----------------");
+        console.log(direccionesLocales);
+        console.log("---------------direcciones locales----------------");
 
 
+        function PdfConverter(){
+            // Crea el documento
+            const doc = new PDFDocument();
+          
+            //Mandar salida, puede ser local o http
+            doc.pipe(fs.createWriteStream('./pdf/name_date.pdf'));
+          
+            // Agregar la imagen, ruta de las misma y persolanizar los parametros
+            doc.image(direccionesLocales[0],{
+              fit: [500, 600],
+              align: 'right',
+              valign: 'center'
+            });
+          
+            //Otra imagen
+            doc
+              .addPage() //<-- agrega una nueva pagina
+                doc.image(direccionesLocales[1],{ //<-- ruta de la imagen
+                  fit: [500, 600], //<-- tamaño en 'x' y en 'y' 
+                  align: 'center',  //<-- Alineamiento
+                  valign: 'center'
+                });
+          
+           
+            doc.end();
+          }
+          
+          PdfConverter();
+
+          //ruta donde voy a subir
+        const rutaPdf = path.join(__dirname,'../pdf/name_date.pdf');
+        console.log("------------- ruta pdf---------");
+        console.log(rutaPdf);
+        console.log("------------- ruta pdf---------");
+        var tempFilePat = rutaPdf
+
+        // try {
+        //     //var data = fs.readFileSync(rutaPdf,)
+        //     console.log("---------------- data -------------------");
+        //     console.log(rutaPdf);
+        //     console.log("---------------- data -------------------");
+
+        //     const dattempFilePata = url.pathToFileURL(rutaPdf)
+
+
+        //     console.log("---------------- dattempFilePata -------------------");
+        //     console.log(dattempFilePata);
+        //     console.log("---------------- dattempFilePata -------------------");
+
+        //     const {secure_url} = await cloudinary.uploader.upload(dattempFilePata);
+            
+        // } catch (error) {
+        //     console.log("pailas");
+        //     return res.status(400).json({msg:error})
+        // }
+
+        
+        //subir archivo
+
+          
         for(var element of direccionesLocales){
             if(fs.existsSync(element)){
                 fs.unlinkSync(element)
             }
         }
 
+        // if(fs.existsSync(rutaPdf)){
+        //     fs.unlinkSync(rutaPdf)
+        // }
 
-        res.json(listarImagenes)
+
+        
+
+        res.json({msg:"guardo con exito"})
     }
 
 }
