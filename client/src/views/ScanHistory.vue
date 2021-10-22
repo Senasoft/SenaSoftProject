@@ -127,12 +127,14 @@ export default {
       Video.value.pause();
 
       //Obtener contexto del canvas y dibujar sobre él
-      photoModal.value = true
       Canvas.value.width = Video.value.videoWidth;
       Canvas.value.height = Video.value.videoHeight;
       ctx.value.drawImage(Video.value, 0, 0, Canvas.value.width, Canvas.value.height);
 
-      actualPotho.value =  Canvas.value.toDataURL();//Esta es la foto, en base 64
+      Canvas.value.toBlob((blob)=> {
+        actualPotho.value = blob
+        photoModal.value = true
+      },'image/jpeg')
     }
 
     const addImage = () => {
@@ -149,7 +151,8 @@ export default {
       Video.value.play();
     }
     const uploadImages = () => {
-      store.dispatch('uploadPhoto', photos)
+      photos.value.push(actualPotho.value)
+      store.dispatch('uploadPhoto', photos.value)
       actualPotho.value = null
       photoModal.value = false
       //Reanudar reproducción

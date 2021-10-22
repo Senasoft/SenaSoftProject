@@ -1,5 +1,5 @@
 {
-  "name": "base",
+  "name": "health_header",
   "version": "1.0.0",
   "description": "proyecto base para mongo express node",
   "main": "app.js",
@@ -8,7 +8,6 @@
     "npm": "6.14.13"
   },
   "scripts": {
-    "heroku-prebuild": "npm run create-app && cd client && npm run build & cd ..",
     "start": "node app",
     "dev": "nodemon app",
     "build:dev": "cd client && npm run build && cd .. && npm run start",

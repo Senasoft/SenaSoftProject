@@ -15,10 +15,14 @@ export const Login = async (user) => {
 
 export const UploadPhoto = async (photos) => {
   const formData = new FormData()
-  formData.append('archivos', photos)
+  let counter = 0
+  photos.forEach(photo => {
+    counter++
+    formData.append('archivo', photo, `historia${counter}.jpeg`)
+  });
   const response = await fetch("api/usuario/historiaPaciente", {
     method: "POST",
-    body: formData
+    body: formData,
   })
   if(response.ok) {
     return response.json()
