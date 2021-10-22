@@ -2,16 +2,21 @@
 <div class="scanner">
   <video ref="Video" id="video" autoplay class="scanner__video"></video>
   <div v-show="photoModal" class="scanner-modal">
-    <canvas class="scanner-modal__canvas" ref="Canvas" id="canvas"></canvas>
-    <div class="scanner-modal__buttons">
-      <button class="btn btn--scanner-modal" @click="discardImage">Descartar</button>
-      <button class="btn btn--scanner-modal" @click="addImage">Tomar otra foto</button>
-      <button class="btn btn--scanner-modal" @click="uploadImages">Subir Historia</button>
+    <div class="scanner-modal__container"> 
+      <canvas class="scanner-modal__canvas" ref="Canvas" id="canvas"></canvas>
+      <div class="scanner-modal__buttons">
+        <button class="btn btn--scanner-modal" @click="discardImage">Descartar</button>
+        <button class="btn btn--scanner-modal" @click="addImage">añadir otra foto</button>
+        <button class="btn btn--scanner-modal" @click="uploadImages">Subir Historia</button>
 
+      </div>
     </div>
   </div>
   <div v-if="loading || error" class="scanner-modal scanner-modal--loading-error">
-    <Loading v-if="loading"/>
+    <div class="scanner-modal__container scanner-modal__container--loading-error">
+      <Loading v-if="loading"/>
+
+    </div>
   </div>
   <div class="scanner__options">
     <button :disabled="photoModal" @click="pickPhoto" class="btn btn--scanner">Scanear</button>
@@ -105,7 +110,7 @@ export default {
         //Escuchar el click del botón para tomar la foto
       })
       .catch(error => {
-        console.log("Permiso denegado o error: ", error);
+        console.error("Permiso denegado o error: ", error);
         router.push('/')
       })
     }
@@ -153,6 +158,7 @@ export default {
     const uploadImages = () => {
       photos.value.push(actualPotho.value)
       store.dispatch('uploadPhoto', photos.value)
+      photos.value = []
       actualPotho.value = null
       photoModal.value = false
       //Reanudar reproducción
