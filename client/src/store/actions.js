@@ -19,6 +19,16 @@ export default {
     }
   },
 
+  async uploadPhoto({commit}, photos){
+    try {
+      commit('setLoading', true)
+      const response = api.UploadPhoto(photos)
+      console.log(response)
+    } catch (error) {
+      commit('setError', error)
+    }
+  },
+
   logout({commit}) {
     localStorage.removeItem('token')
     commit('setToken', null)
