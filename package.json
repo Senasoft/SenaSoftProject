@@ -3,6 +3,10 @@
   "version": "1.0.0",
   "description": "proyecto base para mongo express node",
   "main": "app.js",
+  "engines": {
+    "node": "14.17.3",
+    "npm": "6.14.13"
+  },
   "scripts": {
     "start": "node app",
     "dev": "nodemon app",
