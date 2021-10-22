@@ -11,7 +11,7 @@
     "start": "node app",
     "dev": "nodemon app",
     "build": "npm run create-app && cd client && npm run build && cd .. && npm run start",
-    "create-app": "npm i && cd client && npm i",
+    "create-app": "npm i && cd client && npm i && cd ..",
     "serve": "pm2 delete 0 ; pm2 start app.js && cd client && npm run serve -- --port 8081"
   },
   "type": "module",
