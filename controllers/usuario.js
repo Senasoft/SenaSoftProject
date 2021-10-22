@@ -30,6 +30,9 @@ import { subirArchivo } from '../helpers/subirArchivo.js';
 
 //token
 import { generarJWT } from "../middlewares/validarJWT.js";
+import { time } from "console";
+
+
 
 // nombreUsuario password rol email
 
@@ -229,185 +232,153 @@ const usuarioControllers = {
     //Amazon 
     operarImagenes : async (req,res) =>{
 
-        
-       
-        //capturar archivos
-        const archivos = req.files.archivo;
-        console.log(archivos);
-
-        if(archivos.length == undefined){
-            return res.json({msg:"Faltan imagenes"})
-        }
-        if(archivos.length !== 2){
-            return res.json({msg:"Solo dos imagenes"})
-        }
-
-        var error = "";
         var direccionesLocales = [];
-        var i=0
 
-        for( var archivo of archivos){
-            try{
-                const nombreListos = await subirArchivo(archivo,undefined);
-                direccionesLocales.push(nombreListos);
-            }catch(err){
-                error = err;
-                break;
-            }            
-        }
+        try {
+            //capturar archivos
+            const archivos = req.files.archivo;
 
-        // si ocurre un error borrar arcivos
-        if(error!==""){
-            console.log(error);
-            for(var element of direccionesLocales){
-                if(fs.existsSync(element)){
-                    fs.unlinkSync(element)
-                }
+            console.log("------------- fotos de formulario---------------");
+            console.log(archivos);
+            console.log("------------- fotos de formulario---------------");
+
+            if(archivos.length == undefined){
+                return res.json({msg:"Faltan imagenes"})
             }
-            return res.json({error:error});
-        }
+            if(archivos.length !== 2){
+                return res.json({msg:"Solo dos imagenes"})
+            }
 
-        const validarAmazon = await validarFormulario(direccionesLocales);
+            var error = "";
+            
+            
 
-        console.log("--------------valido amazon-----------------------");
-        console.log(validarAmazon);
-        console.log("--------------valido amazon-----------------------");
+            for( var archivo of archivos){
+                try{
+                    const nombreListos = await subirArchivo(archivo,undefined);
+                    direccionesLocales.push(nombreListos);
+                }catch(err){
+                    error = err;
+                    break;
+                }            
+            }
 
-        // validar campos de los formularios
-
-        for(var validar of validarAmazon){
-            if(validar.EDAD==""){
+            // si ocurre un error borrar arcivos
+            if(error!==""){
+                console.log(error);
                 for(var element of direccionesLocales){
                     if(fs.existsSync(element)){
                         fs.unlinkSync(element)
                     }
                 }
-                return res.status(400).json("falta edad")
-                
+                return res.json({error:error});
             }
-        }
+
+            const validarAmazon = await validarFormulario(direccionesLocales);
+
+            console.log("--------------datos de amazon-----------------------");
+            console.log(validarAmazon);
+            console.log("--------------datos de amazon-----------------------");
+
+            var nombrePaciente = "nn";
+            var fechaHistoria = "nn";
 
 
-        var nombrePaciente = "Name";
-        var fechaHistoria = "Date";
+            for(var element of validarAmazon){
+                if(element.FECHA){
+                    fechaHistoria = element.FECHA;
+                }
+                if(element["NOMBRES Y APELLIDOS"]){
+                    nombrePaciente = element["NOMBRES Y APELLIDOS"];
+                }
+            }
+            const hora = new Date();
 
+            let horaFinal = hora.getHours()+"-"+hora.getMinutes()+"-"+hora.getSeconds(); 
 
-        // for(var element of validarAmazon){
-        //     nombrePaciente = element.;
-        //     fechaHistoria = ;
-        // }
-
-      
+            var nombreDocumentoR = nombrePaciente+"_"+fechaHistoria+'_'+horaFinal;
+            var nombreDocumentoT = nombreDocumentoR.replace(/ /g, "")
+            var buscar = "/"
+            var nombreDocumento = nombreDocumentoT.replace(new RegExp(buscar,"g") ,"-")
         
 
+            console.log("____________ nombre del pdf name - fecha docuemtno - fecha peticion ______________________");
+            console.log(nombreDocumento);
+            console.log("____________nombre del pdf name - fecha docuemtno - fecha peticion______________________");
 
-        const nombreDocumento = nombrePaciente+"_"+fechaHistoria;
-
-
-
-
-        var listarImagenes =[];
-        for(var element of direccionesLocales){
-            listarImagenes.push({image:element})
-        }
-
-        var docDefinition = {
-            content:listarImagenes,
-            //styles:styles,
-
-        }
-
-        //extrae la carpeta de donde esta instalado
-        const __dirname = path.dirname(url.fileURLToPath(import.meta.url));
-        
-        //ruta donde voy a subir
-        const uploadPath = path.join(__dirname,'../pdf/',`"${nombreDocumento}"`,'.pdf');
-
-
-        // const printer = new PdfPrinter(fonts);
-        // let pdfDoc = pinter.createPdfKitDocument(docDefinition);
-        // pdfDoc.pipe(fs.createWriteStream(`${uploadPath}`))
-        // pdfDoc.end();
-
-        console.log("---------------direcciones locales----------------");
-        console.log(direccionesLocales);
-        console.log("---------------direcciones locales----------------");
-
-
-        function PdfConverter(){
-            // Crea el documento
-            const doc = new PDFDocument();
-          
-            //Mandar salida, puede ser local o http
-            doc.pipe(fs.createWriteStream('./pdf/name_date.pdf'));
-          
-            // Agregar la imagen, ruta de las misma y persolanizar los parametros
-            doc.image(direccionesLocales[0],{
-              fit: [500, 600],
-              align: 'right',
-              valign: 'center'
-            });
-          
-            //Otra imagen
-            doc
-              .addPage() //<-- agrega una nueva pagina
-                doc.image(direccionesLocales[1],{ //<-- ruta de la imagen
-                  fit: [500, 600], //<-- tamaño en 'x' y en 'y' 
-                  align: 'center',  //<-- Alineamiento
-                  valign: 'center'
-                });
-          
-           
-            doc.end();
-          }
-          
-          PdfConverter();
-
-          //ruta donde voy a subir
-        const rutaPdf = path.join(__dirname,'../pdf/',nombreDocumento);
-        console.log("------------- ruta pdf---------");
-        console.log(rutaPdf);
-        console.log("------------- ruta pdf---------");
-        var tempFilePat = rutaPdf
-
-        // try {
-        //     //var data = fs.readFileSync(rutaPdf,)
-        //     console.log("---------------- data -------------------");
-        //     console.log(rutaPdf);
-        //     console.log("---------------- data -------------------");
-
-        //     const dattempFilePata = url.pathToFileURL(rutaPdf)
-
-
-        //     console.log("---------------- dattempFilePata -------------------");
-        //     console.log(dattempFilePata);
-        //     console.log("---------------- dattempFilePata -------------------");
-
-        //     const {secure_url} = await cloudinary.uploader.upload(dattempFilePata);
+            //extrae la carpeta de donde esta instalado
+            const __dirname = path.dirname(url.fileURLToPath(import.meta.url));
             
-        // } catch (error) {
-        //     console.log("pailas");
-        //     return res.status(400).json({msg:error})
-        // }
-
+            // //ruta donde voy a subir
+            // const uploadPath = path.join(__dirname,'../pdf/',nombreDocumento,'.pdf');
+            // console.log(".-----------------uploadPath------------------");
+            // console.log(uploadPath);
+            // console.log(".-----------------uploadPath------------------");
         
-        //subir archivo
 
-          
-        for(var element of direccionesLocales){
-            if(fs.existsSync(element)){
-                fs.unlinkSync(element)
+
+            // const printer = new PdfPrinter(fonts);
+            // let pdfDoc = pinter.createPdfKitDocument(docDefinition);
+            // pdfDoc.pipe(fs.createWriteStream(`${uploadPath}`))
+            // pdfDoc.end();
+
+            console.log("---------------direcciones locales de imagenes----------------");
+            console.log(direccionesLocales);
+            console.log("---------------direcciones locales de imagenes----------------");
+
+
+            function PdfConverter(){
+                // Crea el documento
+                const doc = new PDFDocument();
+            
+                //Mandar salida, puede ser local o http
+
+                var ruta = `./pdf/${nombreDocumento}.pdf`
+
+                console.log(ruta);
+
+                doc.pipe(fs.createWriteStream(ruta));
+            
+                // Agregar la imagen, ruta de las misma y persolanizar los parametros
+                doc.image(direccionesLocales[0],{
+                fit: [500, 600],
+                align: 'right',
+                valign: 'center'
+                });
+            
+                //Otra imagen
+                doc.addPage() //<-- agrega una nueva pagina
+
+                doc.image(direccionesLocales[1],{ //<-- ruta de la imagen
+                    fit: [500, 600], //<-- tamaño en 'x' y en 'y' 
+                    align: 'center',  //<-- Alineamiento
+                    valign: 'center'
+                });
+            
+                doc.end();
             }
-        }
-
-        // if(fs.existsSync(rutaPdf)){
-        //     fs.unlinkSync(rutaPdf)
-        // }
-
+            
+            PdfConverter();
 
         
-
-        res.json({msg:"guardo con exito"})
+            for(var element of direccionesLocales){
+                if(fs.existsSync(element)){
+                    fs.unlinkSync(element)
+                }
+            }
+            return res.json({msg:"guardo con exito"})
+            
+        } catch (error) {
+            for(var element of direccionesLocales){
+                if(fs.existsSync(element)){
+                    fs.unlinkSync(element)
+                }
+            }
+            return res.json({msg:error})
+        }
+        
+       
+                    
     }
 
 }

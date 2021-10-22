@@ -5,9 +5,9 @@ import * as fs from 'fs'
 
 const validarFormulario = async(direccionesLocales)=>{
 
-    console.log("------------------");
+    console.log("---------direcciones locales de fotos temporal---------");
     console.log(direccionesLocales);
-    console.log("------------------");
+    console.log("-------direcciones locales de fotos temporal-----------");
     var infoFotos = [];
 
     return new Promise(async(resolve,reject)=>{
