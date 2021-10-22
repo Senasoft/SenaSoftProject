@@ -23,7 +23,7 @@ export default {
     try {
       commit('setLoading', true)
       const response = await api.UploadPhoto(photos)
-      console.log(response)
+      commit('setCheckout', response)
       commit('setLoading', false) 
     } catch (error) {
       commit('setError', error)
