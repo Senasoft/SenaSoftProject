@@ -29,7 +29,7 @@ import fetch from 'fetch';
 import { subirArchivo } from '../helpers/subirArchivo.js';
 
 //token
-import { generarJWT } from "../middlewares/validarJwt.js";
+import { generarJWT } from '../middlewares/validarjtw.js';
 
 // nombreUsuario password rol email
 
@@ -270,6 +270,8 @@ const usuarioControllers = {
         console.log(validarAmazon);
         console.log("--------------valido amazon-----------------------");
 
+        // validar campos de los formularios
+
         for(var validar of validarAmazon){
             if(validar.EDAD==""){
                 for(var element of direccionesLocales){
@@ -282,8 +284,18 @@ const usuarioControllers = {
             }
         }
 
-        const nombrePaciente = "nombre";
-        const fechaHistoria = "2020-01/01"
+
+        var nombrePaciente = "Name";
+        var fechaHistoria = "Date";
+
+
+        // for(var element of validarAmazon){
+        //     nombrePaciente = element.;
+        //     fechaHistoria = ;
+        // }
+
+      
+        
 
 
         const nombreDocumento = nombrePaciente+"_"+fechaHistoria;
@@ -349,7 +361,7 @@ const usuarioControllers = {
           PdfConverter();
 
           //ruta donde voy a subir
-        const rutaPdf = path.join(__dirname,'../pdf/name_date.pdf');
+        const rutaPdf = path.join(__dirname,'../pdf/',nombreDocumento);
         console.log("------------- ruta pdf---------");
         console.log(rutaPdf);
         console.log("------------- ruta pdf---------");
