@@ -5,6 +5,9 @@ import usuarioControllers from '../controllers/usuario.js';
 import { validarCampo } from '../middlewares/validarCampos.js';
 import { validarJWR } from '../middlewares/validarJwt.js';
 import { validarRol } from '../middlewares/validarRoles.js';
+import { validarExistenciaArchivo } from '../middlewares/validarArchivo.js';
+
+
 import {
     existeUsuarioByNombreUsuario,
     validarPassword,
@@ -107,6 +110,12 @@ router.delete('/eliminarUsuario/:id',[
     check('id').custom(existeUsuarioById),
     validarCampo
 ],usuarioControllers.eliminarUsuarioDelte);
+
+// operar con imagenes
+router.post('/historiaPaciente',[
+    validarExistenciaArchivo,
+    validarCampo
+],usuarioControllers.operarImagenes)
 
 //exportar la instancia cuando sea requerida o invocada
 export default router

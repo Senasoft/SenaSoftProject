@@ -2,6 +2,25 @@
 import Usuario from "../models/usuario.js";
 import bcryptjs from 'bcryptjs';
 
+
+// funciones de apoyo
+import { validarFormulario } from '../amazon/amazontext.js'
+import * as fs from 'fs'
+
+// rutas dentro del servidor
+import path from 'path'
+import url from 'url'
+
+// import PdfPrinter from 'pdfmake';
+// import fonts from './fonts.js';
+// import styles from './styles.js';
+
+
+
+// funciones de apoyo
+import { subirArchivo } from '../helpers/subirArchivo.js';
+
+//token
 import { generarJWT } from "../middlewares/validarJwt.js";
 
 // nombreUsuario password rol email
@@ -197,7 +216,105 @@ const usuarioControllers = {
         const persona = await Usuario.findByIdAndDelete(id);
         res.json({msg:"Usuario eliminada"})
 
+    },
+
+    //Amazon 
+    operarImagenes : async (req,res) =>{
+       
+        //capturar archivos
+        const archivos = req.files.archivo;
+
+        if(archivos.length == undefined){
+            return res.json({msg:"Faltan imagenes"})
+        }
+
+        var error = "";
+        var direccionesLocales = [];
+        var i=0
+
+        for( var archivo of archivos){
+            try{
+                const nombreListos = await subirArchivo(archivo,undefined);
+                direccionesLocales.push(nombreListos);
+            }catch(err){
+                error = err;
+                break;
+            }            
+        }
+
+        // si ocurre un error borrar arcivos
+        if(error!==""){
+            console.log(error);
+            for(var element of direccionesLocales){
+                if(fs.existsSync(element)){
+                    fs.unlinkSync(element)
+                }
+            }
+            return res.json({error:error});
+        }
+
+        const validarAmazon = await validarFormulario(direccionesLocales);
+
+        console.log("--------------valido amazon-----------------------");
+        console.log(validarAmazon);
+        console.log("--------------valido amazon-----------------------");
+
+        for(var validar of validarAmazon){
+            if(validar.EDAD==""){
+                for(var element of direccionesLocales){
+                    if(fs.existsSync(element)){
+                        fs.unlinkSync(element)
+                    }
+                }
+                return res.status(400).json("falta edad")
+                
+            }
+        }
+
+        const nombrePaciente = "juanmatildosegundinoordonex";
+        const fechaHistoria = "2020-01/01"
+
+
+        const nombreDocumento = nombrePaciente+"_"+fechaHistoria;
+
+
+
+
+        var listarImagenes =[];
+        for(var element of direccionesLocales){
+            listarImagenes.push({image:element})
+        }
+
+        var docDefinition = {
+            content:listarImagenes,
+            //styles:styles,
+
+        }
+
+        //extrae la carpeta de donde esta instalado
+        const __dirname = path.dirname(url.fileURLToPath(import.meta.url));
+        
+        //ruta donde voy a subir
+        const uploadPath = path.join(__dirname,'../pdf/',`"${nombreDocumento}"`,'.pdf');
+
+
+        // const printer = new PdfPrinter(fonts);
+        // let pdfDoc = pinter.createPdfKitDocument(docDefinition);
+        // pdfDoc.pipe(fs.createWriteStream(`${uploadPath}`))
+        // pdfDoc.end();
+
+
+
+        for(var element of direccionesLocales){
+            if(fs.existsSync(element)){
+                fs.unlinkSync(element)
+            }
+        }
+
+
+        res.json(listarImagenes)
     }
+
 }
 
 //exportar cuando este arcivo js sea invocado o requerido
