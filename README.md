@@ -15,8 +15,3 @@ team members:
  - Second:
   To run the application is with the command
   $ npm run dev
-  
-  
-  
-
- 
