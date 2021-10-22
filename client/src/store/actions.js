@@ -22,8 +22,9 @@ export default {
   async uploadPhoto({commit}, photos){
     try {
       commit('setLoading', true)
-      const response = api.UploadPhoto(photos)
+      const response = await api.UploadPhoto(photos)
       console.log(response)
+      commit('setLoading', false) 
     } catch (error) {
       commit('setError', error)
     }
