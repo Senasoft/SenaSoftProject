@@ -50,6 +50,14 @@
     &__buttons {
       display: flex;
     }
+    &--loading-error {
+      min-height: 300px;
+      display: flex;
+      align-items: center;
+      .spinner {
+        margin: 0 auto;
+      }
+    }
   }
 }
 

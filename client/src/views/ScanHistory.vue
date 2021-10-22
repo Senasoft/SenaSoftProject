@@ -1,7 +1,7 @@
 <template>
 <div class="scanner">
   <video ref="Video" id="video" autoplay class="scanner__video"></video>
-  <div v-if="photoModal" class="scanner-modal">
+  <div v-show="photoModal" class="scanner-modal">
     <canvas class="scanner-modal__canvas" ref="Canvas" id="canvas"></canvas>
     <div class="scanner-modal__buttons">
       <button class="btn btn--scanner-modal" @click="discardImage">Descartar</button>
@@ -10,12 +10,12 @@
 
     </div>
   </div>
-  <div v-else-if="loading || error" class="scanner-modal">
-    
+  <div v-if="loading || error" class="scanner-modal scanner-modal--loading-error">
+    <Loading v-if="loading"/>
   </div>
   <div class="scanner__options">
-    <button @click="pickPhoto" class="btn btn--scanner">Scanear</button>
-    <button @click="changeCamera" v-if="dispositives.length > 1" class="scanner__change">
+    <button :disabled="photoModal" @click="pickPhoto" class="btn btn--scanner">Scanear</button>
+    <button :disabled="photoModal" @click="changeCamera" v-if="dispositives.length > 1" class="scanner__change">
       <img :src="require('@/assets/icons/change.svg')" alt="">
     </button>
   </div>
@@ -26,8 +26,13 @@
 import {ref, computed, onMounted, watch} from "vue"
 import {useRouter} from 'vue-router'
 import {useStore} from 'vuex'
+
+import Loading from "@/components/Loading.vue"
 export default {
   name:"ScanHistory",
+  components: {
+    Loading
+  },
   setup() {
     const store = useStore()
     const router = useRouter()
@@ -122,12 +127,12 @@ export default {
       Video.value.pause();
 
       //Obtener contexto del canvas y dibujar sobre él
+      photoModal.value = true
       Canvas.value.width = Video.value.videoWidth;
       Canvas.value.height = Video.value.videoHeight;
       ctx.value.drawImage(Video.value, 0, 0, Canvas.value.width, Canvas.value.height);
 
       actualPotho.value =  Canvas.value.toDataURL();//Esta es la foto, en base 64
-      photoModal.value = true
     }
 
     const addImage = () => {
