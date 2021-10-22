@@ -29,11 +29,7 @@ import fetch from 'fetch';
 import { subirArchivo } from '../helpers/subirArchivo.js';
 
 //token
-<<<<<<< HEAD
-import { generarJWT } from '../middlewares/validarjtw.js';
-=======
 import { generarJWT } from "../middlewares/validarJWT.js";
->>>>>>> d4df68dfabd3bfe5abf74a06eca39ba1d3311a38
 
 // nombreUsuario password rol email
 
@@ -241,6 +237,9 @@ const usuarioControllers = {
 
         if(archivos.length == undefined){
             return res.json({msg:"Faltan imagenes"})
+        }
+        if(archivos.length !== 2){
+            return res.json({msg:"Solo dos imagenes"})
         }
 
         var error = "";
