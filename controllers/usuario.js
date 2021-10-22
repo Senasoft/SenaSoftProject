@@ -29,7 +29,7 @@ import fetch from 'fetch';
 import { subirArchivo } from '../helpers/subirArchivo.js';
 
 //token
-import { generarJWT } from "../middlewares/validarJwt.js";
+import { generarJWT } from "../middlewares/validarJWT.js";
 
 // nombreUsuario password rol email
 
