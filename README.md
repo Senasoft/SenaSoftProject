@@ -2,8 +2,9 @@
  Application created to participate in senasoft 2021
 
 team members:
- Darien Romero
- Ferley Arias
+ Darien Romero,
+ Ferley Arias 
+ and
  Francisco franco
 
 
